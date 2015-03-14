@@ -1,0 +1,120 @@
+package org.usfirst.frc.team2984.robot;
+
+
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+/**
+ * This is a demo program showing how to use Mecanum control with the RobotDrive class.
+ */
+public class Robot extends IterativeRobot {
+	
+    private MecanumDrive mecanumDrive;
+    private boolean unSafeToggle = false;
+    private boolean unSafeMode = true;
+    private Joystick stick;
+    private RemoteJoystick stick2;
+    private double lastValue = -1;
+    private boolean gabby = true;
+    private CANTalon lifterMotorLeft;
+    private CANTalon lifterMotorRight;
+    
+    // The channel on the driver station that the joystick is connected to
+    final int joystickChannel	= 0;
+	private boolean moveingToPosition;
+	private boolean moveingToPosition2;
+
+    public void robotInit() {
+        stick = new Joystick(joystickChannel);
+        stick2 = new RemoteJoystick("CustomData1", false);
+        mecanumDrive = new MecanumDrive(14,4,16,1);
+        lifterMotorLeft = new CANTalon(12);
+        lifterMotorRight = new CANTalon(9);
+    }
+
+    /**
+     * Runs the motors with Mecanum drive.
+     */
+    public void teleopPeriodic() {
+    	if(stick2.getMode()>0){
+    		this.gabby = true;
+    	}
+    	if(stick2.getMode()< 0){
+    		this.gabby = false;
+    		this.lifterMotorLeft.setPosition(0);
+    		this.lifterMotorRight.setPosition(0);
+    	}
+    	if(this.gabby){
+//        	this.mecanumDrive.drive(stick2.getX(), stick2.getY(), stick2.getTwist(), 0);	
+    		this.mecanumDrive.drive(0, 0, 0, 0);
+    	} else {
+    		this.mecanumDrive.drive(0, 0, 0, 0);	
+    	}
+//    	double lifterMotorLeftSpeed = stick.getY();
+//    	double difference = Math.abs(this.lifterMotorLeft.getEncPosition() - this.lifterMotorRight.getEncPosition()); 
+//    	if(difference > 5){
+//    		double rate = Math.min(1, difference/200);
+//    		lifterMotorLeftSpeed = lifterMotorLeftSpeed + ((this.lifterMotorLeft.getEncPosition() > this.lifterMotorRight.getEncPosition()) ? -0.4*rate : 0.4*rate);
+//    		SmartDashboard.putBoolean("UP", this.lifterMotorLeft.getEncPosition() > this.lifterMotorRight.getEncPosition());
+//    	}
+//    	this.lifterMotorLeft.set(-lifterMotorLeftSpeed);
+    	if(this.moveingToPosition != stick.getRawButton(2)){
+    		if(this.moveingToPosition){
+        		this.lifterMotorRight.changeControlMode(ControlMode.PercentVbus);
+        		this.lifterMotorLeft.changeControlMode(ControlMode.PercentVbus);
+    		} else {
+    			this.lifterMotorRight.changeControlMode(ControlMode.Position);
+    			this.lifterMotorRight.setPID(1, 0.001, 0, 0, 100, 36, 0);
+    			this.lifterMotorLeft.changeControlMode(ControlMode.Position);
+    			this.lifterMotorLeft.setPID(1, 0.001, 0, 0, 100, 36, 0);
+    		}
+    	}
+    	boolean isLifterMotorLeftSet = false;
+    	if(!stick.getRawButton(4)){
+    		isLifterMotorLeftSet = true;
+	    	int movement = stick.getRawButton(3) ? -2000 : 0;
+	    	movement = stick.getRawButton(1) ? -1000 : movement;
+	    	this.moveingToPosition = stick.getRawButton(2);
+	    	if(Math.abs(stick.getY())>0.1){
+				this.lifterMotorRight.set(-stick.getY());
+				this.lifterMotorLeft.set(-stick.getY());
+			} else if(!this.moveingToPosition) {
+				this.lifterMotorRight.set(0);
+				this.lifterMotorLeft.set(0);
+			} else{
+				this.lifterMotorRight.set(movement);
+				this.lifterMotorLeft.set(movement);
+			}
+    	} else if(!this.lifterMotorRight.isFwdLimitSwitchClosed()) {
+				this.lifterMotorLeft.changeControlMode(ControlMode.PercentVbus);
+				this.lifterMotorRight.set(1);
+    	} else {
+    		this.lifterMotorLeft.changeControlMode(ControlMode.PercentVbus);
+			this.lifterMotorRight.set(0);
+    	}
+    	if(this.lifterMotorRight.isFwdLimitSwitchClosed()){
+    		this.lifterMotorLeft.setPosition(0);
+    	}
+    	
+    	SmartDashboard.putNumber("Encoder Position Left", this.lifterMotorLeft.getEncPosition());
+		SmartDashboard.putNumber("Encoder Position Right", this.lifterMotorRight.getEncPosition());
+		SmartDashboard.putBoolean("Limit Switch fwd", this.lifterMotorRight.isFwdLimitSwitchClosed());
+		SmartDashboard.putBoolean("Limit Switch back", this.lifterMotorRight.isRevLimitSwitchClosed());
+		SmartDashboard.putBoolean("Lft Limit Switch fwd", this.lifterMotorLeft.isFwdLimitSwitchClosed());
+		SmartDashboard.putBoolean("Lft Limit Switch back", this.lifterMotorLeft.isRevLimitSwitchClosed());
+		SmartDashboard.putString("Value That it got", this.stick2.getString("Encoder Locations"));
+
+		if(!isLifterMotorLeftSet){
+			
+		}
+		
+    	if(this.lastValue == -1){
+    		this.lastValue = this.stick2.getTimeTaken();
+    	}
+    }
+    
+}

@@ -1,0 +1,77 @@
+package org.usfirst.frc.team2984.robot;
+
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
+
+public class ToteLifter {
+	private CANTalon leftLifterMotor;
+	private CANTalon rightLifterMotor;
+	private boolean isInPositionMode;
+	private boolean isReseted;
+	
+	ToteLifter(int leftMotor, int rightMotor){
+		this.leftLifterMotor = new CANTalon(leftMotor);
+		this.rightLifterMotor = new CANTalon(rightMotor);
+	}
+	
+	//sets the talons to take a position in .set
+	private void setPositionMode(){
+		if(!this.isInPositionMode){
+			this.leftLifterMotor.changeControlMode(ControlMode.Position);
+			this.leftLifterMotor.setPID(1, 0.001, 0, 0, 100, 36, 0);
+			this.rightLifterMotor.changeControlMode(ControlMode.Position);
+			this.rightLifterMotor.setPID(1, 0.001, 0, 0, 100, 36, 0);
+		}
+	}
+	
+	//Sets the talons to use the input power in .set
+	private void setPowerMode(){
+		if(this.isInPositionMode){
+			this.leftLifterMotor.changeControlMode(ControlMode.PercentVbus);
+			this.rightLifterMotor.changeControlMode(ControlMode.PercentVbus);
+		}
+	}
+	
+	//sets the speed of a talon
+	public void set(double power){
+		this.setPowerMode();
+		this.leftLifterMotor.set(power);
+		this.rightLifterMotor.set(power);
+	}
+	
+	//sets the position of a talon
+	public void set(int position){
+		this.setPositionMode();
+		this.leftLifterMotor.set(position);
+		this.rightLifterMotor.set(position);
+	}
+	
+	//Resets the motor, return true when reseted
+	public boolean reset(){
+		boolean reseted = false;
+		if(!this.leftLifterMotor.isFwdLimitSwitchClosed()) {
+			this.leftLifterMotor.changeControlMode(ControlMode.PercentVbus);
+			this.leftLifterMotor.set(0.4);
+		} else {
+			this.leftLifterMotor.changeControlMode(ControlMode.PercentVbus);
+			this.leftLifterMotor.set(0);
+		}
+		if(!this.rightLifterMotor.isFwdLimitSwitchClosed()) {
+			this.rightLifterMotor.changeControlMode(ControlMode.PercentVbus);
+			this.rightLifterMotor.set(0.4);
+		} else {
+			this.rightLifterMotor.changeControlMode(ControlMode.PercentVbus);
+			this.rightLifterMotor.set(0);
+		}
+		if(this.leftLifterMotor.isFwdLimitSwitchClosed()){
+    		this.leftLifterMotor.setPosition(6000);
+    		reseted = true;
+    	}
+    	if(this.rightLifterMotor.isFwdLimitSwitchClosed()){
+    		this.rightLifterMotor.setPosition(6000);
+    	} else {
+    		reseted = false;
+    	}
+    	return reseted;
+	}
+}

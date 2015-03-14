@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Robotics/Desktop/RXTX64/RXTXcomm.jar">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/Robotics/Desktop/RXTX64"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Robotics/wpilib/java/current/lib/WPILib.jar" sourcepath="C:/Users/Robotics/wpilib/java/current/lib/WPILib-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Robotics/wpilib/java/current/lib/NetworkTables.jar" sourcepath="C:/Users/Robotics/wpilib/java/current/lib/NetworkTables-sources.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

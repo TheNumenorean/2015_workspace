@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Talon"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Jaguar"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.AnalogInput"/>
+<fullyQualifiedTypeName name="java.lang.reflect.Array"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Gyro"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.DigitalInput"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.DriverStation"/>
+<fullyQualifiedTypeName name="com.ni.vision.NIVision.DrawTextOptions"/>
+<fullyQualifiedTypeName name="com.ni.vision.NIVision.Point"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.networktables.NetworkTable"/>
+<fullyQualifiedTypeName name="java.lang.Thread"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.smartdashboard.SmartDashboard"/>
+<fullyQualifiedTypeName name="java.lang.Math"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.CANTalon.ControlMode"/>
+</qualifiedTypeNameHistroy>

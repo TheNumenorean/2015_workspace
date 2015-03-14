@@ -1,0 +1,76 @@
+package org.usfirst.frc.team2984.robot;
+
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.tables.ITable;
+import edu.wpi.first.wpilibj.tables.ITableListener;
+
+public class RemoteJoystick {
+
+	private NetworkTable table;
+
+	public RemoteJoystick(String name, boolean server) {
+
+		if (server) {
+			NetworkTable.setIPAddress("10.29.84.2");
+			table = NetworkTable.getTable(name);
+		} else {
+			table = NetworkTable.getTable(name);
+		}
+		
+	}
+	
+	private boolean isSynced(){
+		return table.isConnected();
+	}
+	
+	public double getX(){
+		return table.getNumber("axis2");
+	}
+	
+	public double getY(){
+		return table.getNumber("axis1");
+	}
+	
+	public double getTwist(){
+		return table.getNumber("yaw");
+	}
+
+	public boolean getButton(int num) {
+		return table.getBoolean("button");
+	}
+
+	public double getAxis(int num) {
+		return table.getNumber("axis" + num);
+	}
+
+	public double getNumber(String name) {
+		return table.getNumber(name);
+	}
+	
+	public double getMode(){
+		return table.getNumber("grabber");
+	}
+
+	public boolean isConnected() {
+		return table.isConnected();
+	}
+
+	public void setButton(int num, boolean value) {
+		table.putBoolean("button", value);
+	}
+	public long getTimeTaken(){
+		long time = (long)table.getNumber("TimeStarted");
+		table.putNumber("TimeStartedServer", System.currentTimeMillis());
+		return System.currentTimeMillis() - time;
+	}
+
+	public void setAxis(int num, double value) {
+		table.putNumber("axis" + num, value);
+	}
+
+	public void setNumber(String name, double value) {
+		table.putNumber(name, value);
+	}
+
+}

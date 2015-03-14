@@ -1,0 +1,7 @@
+package org.usfirst.frc.team2984.robot;
+
+public class ToteLifter {
+	ToteLifter(int leftMotor, int rightMotor){
+		
+	}
+}
