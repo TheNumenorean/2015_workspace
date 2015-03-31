@@ -14,6 +14,12 @@ public class ToteLifter {
 	ToteLifter(int leftMotor, int rightMotor){
 		this.leftLifterMotor = new CANTalon(leftMotor);
 		this.rightLifterMotor = new CANTalon(rightMotor);
+		//Not Tested Yet
+//		this.leftLifterMotor.ConfigFwdLimitSwitchNormallyOpen(true);
+//		this.rightLifterMotor.ConfigFwdLimitSwitchNormallyOpen(true);
+//		this.leftLifterMotor.ConfigRevLimitSwitchNormallyOpen(true);
+//		this.rightLifterMotor.ConfigRevLimitSwitchNormallyOpen(true);
+
 	}
 	
 	//sets the talons to take a position in .set
@@ -37,8 +43,14 @@ public class ToteLifter {
 	}
 	
 	//sets the speed of a talon
-	public void set(double power){
+	public void setSpeed(double power){
 		this.setPowerMode();
+		if(this.leftLifterMotor.isRevLimitSwitchClosed()){
+			this.leftLifterMotor.setPosition(0);
+		}
+		if(this.rightLifterMotor.isRevLimitSwitchClosed()){
+			this.rightLifterMotor.setPosition(0);
+		}
 		this.leftLifterMotor.set(power);
 		this.rightLifterMotor.set(power);
 	}
@@ -46,12 +58,18 @@ public class ToteLifter {
 	//sets the position of a talon
 	public void set(int position){
 		this.setPositionMode();
+		if(this.leftLifterMotor.isRevLimitSwitchClosed()){
+			this.leftLifterMotor.setPosition(0);
+		}
+		if(this.rightLifterMotor.isRevLimitSwitchClosed()){
+			this.rightLifterMotor.setPosition(0);
+		}
 		this.leftLifterMotor.set(position);
 		this.rightLifterMotor.set(position);
 	}
 	
 	//Resets the motor, return true when reseted
-	public boolean reset(){
+	public boolean resetUp(){
 		boolean reseted = false;
 		this.setPowerMode();
 		if(!this.leftLifterMotor.isFwdLimitSwitchClosed()) {
@@ -79,6 +97,36 @@ public class ToteLifter {
     	}
     	return reseted;
 	}
+	
+	//Resets the motor, return true when reseted
+		public boolean resetDown(){
+			boolean reseted = false;
+			this.setPowerMode();
+			if(!this.leftLifterMotor.isRevLimitSwitchClosed()) {
+				this.leftLifterMotor.changeControlMode(ControlMode.PercentVbus);
+				this.leftLifterMotor.set(-0.4);
+			} else {
+				this.leftLifterMotor.changeControlMode(ControlMode.PercentVbus);
+				this.leftLifterMotor.set(0);
+			}
+			if(!this.rightLifterMotor.isRevLimitSwitchClosed()) {
+				this.rightLifterMotor.changeControlMode(ControlMode.PercentVbus);
+				this.rightLifterMotor.set(-0.4);
+			} else {
+				this.rightLifterMotor.changeControlMode(ControlMode.PercentVbus);
+				this.rightLifterMotor.set(0);
+			}
+			if(this.leftLifterMotor.isRevLimitSwitchClosed()){
+	    		this.leftLifterMotor.setPosition(0);
+	    		reseted = true;
+	    	}
+	    	if(this.rightLifterMotor.isRevLimitSwitchClosed()){
+	    		this.rightLifterMotor.setPosition(0);
+	    	} else {
+	    		reseted = false;
+	    	}
+	    	return reseted;
+		}
 	
 	public void debug(){
     	SmartDashboard.putNumber("Encoder Position Left", this.leftLifterMotor.getEncPosition());

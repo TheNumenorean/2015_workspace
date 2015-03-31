@@ -1,0 +1,60 @@
+package org.usfirst.frc.team2984.robot;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Talon;
+
+public class ToteMuncher {
+
+
+	private Talon leftFeederMotor;
+	private Talon rightFeederMotor;
+	private SensorMonitor sensorMonitor;
+	
+	private static final double START_SPEED = 0.4;
+	private static final double NORMAL_SPEED = 0.4;
+	private static final double SLOWER_SPEED = 0.2;
+	private static final double STOP_SPEED = 0.05;
+	
+	ToteMuncher(int leftMotor, int rightMotor, SensorMonitor sensorMonitor){
+		this.leftFeederMotor = new Talon(leftMotor);
+		this.rightFeederMotor = new Talon(rightMotor);
+		this.sensorMonitor = sensorMonitor;
+	}
+	
+	
+	//sets the speed of the two vex controllers to speed
+	public void munch(){
+//		if(this.sensorMonitor.isActive(Sensors.FRONT_UPPER_BEAM_SENSOR)){
+//			this.leftFeederMotor.set(0);
+//			this.rightFeederMotor.set(0);
+//		}
+//		else if(this.sensorMonitor.isActive(Sensors.BACK_BEAM_SENSOR)){
+//			this.leftFeederMotor.set(STOP_SPEED);
+//			this.rightFeederMotor.set(-STOP_SPEED);
+//		} 
+//		else if(this.sensorMonitor.isActive(Sensors.FRONT_LOWER_BEAM_SENSOR)){
+//			this.leftFeederMotor.set(NORMAL_SPEED);
+//			this.rightFeederMotor.set(-NORMAL_SPEED);
+//		} else{
+			this.leftFeederMotor.set(START_SPEED);
+			this.rightFeederMotor.set(-START_SPEED);
+			DriverStation.reportError("Works", false);
+//		}
+		
+	}
+	
+	//sets the speed of the two vex controllers to negated speed
+	public void spit(){
+		this.leftFeederMotor.set(-START_SPEED);
+		this.rightFeederMotor.set(START_SPEED);
+	}
+	
+	//sets the speed of the two vex controllers to 0
+	public void stop(){
+		this.leftFeederMotor.set(0);
+		this.rightFeederMotor.set(0);
+	}
+
+	
+
+}

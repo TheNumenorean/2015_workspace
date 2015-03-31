@@ -31,9 +31,10 @@ public class WindowUpdater extends Thread {
 	private OutputWriter writer;
 	public static String exeption = "none";
 	private SpringLayout layout;
-	private static int NUMBER_OF_BUTTONS = 5;
+	private static int NUMBER_OF_BUTTONS = 6;
 	private int lastIndexSelectedForLocationsTable = 0;
 	private int numberOfIndices = 0;
+	private boolean lastConnected = false;
 	
 	public void run(){
 		System.out.println("Starting Window Thread");
@@ -85,6 +86,10 @@ public class WindowUpdater extends Thread {
 			if(lastIndexSelectedForLocationsTable  != this.writer.getNumber("Index")){
 				buttons[4].repaint();
 				this.lastIndexSelectedForLocationsTable = (int) this.writer.getNumber("Index");
+			}
+			if(this.lastConnected != this.writer.isConnected()){
+				this.lastConnected = this.writer.isConnected();
+				((ConnectionIndicator)buttons[5]).setConnected(this.lastConnected);
 			}
 			try {
 				Thread.sleep(1L);
@@ -315,6 +320,22 @@ public class WindowUpdater extends Thread {
 		this.layout.putConstraint(SpringLayout.WEST, indicator, 0, SpringLayout.WEST, contentPane);
 		this.layout.putConstraint(SpringLayout.EAST, indicator, -120, SpringLayout.EAST, contentPane);
 		contentPane.add(indicator);
+		components[5] = indicator;
+		JButton resetConnected = new JButton("Reset Connected");
+		resetConnected.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				OutputWriter.getWriter("CustomData1").putBoolean("NetworkTable Connected", false);
+			}
+			
+		});
+		this.layout.putConstraint(SpringLayout.SOUTH, resetConnected, 150, SpringLayout.NORTH, contentPane);
+		this.layout.putConstraint(SpringLayout.NORTH, resetConnected, 110, SpringLayout.NORTH, contentPane);
+		this.layout.putConstraint(SpringLayout.WEST, resetConnected, 290, SpringLayout.WEST, contentPane);
+		this.layout.putConstraint(SpringLayout.EAST, resetConnected, -120, SpringLayout.EAST, contentPane);
+		contentPane.add(resetConnected);
+		
 		
 		return components;
 	}

@@ -1,10 +1,7 @@
 package main;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
 import java.util.HashMap;
 
-import javax.swing.JFrame;
 import javax.swing.JTextPane;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
@@ -39,6 +36,9 @@ public class OutputWriter {
 	public String getString(String key){
 		return this.table.getString(key);
 	}
+	public boolean isConnected(){
+		return this.table.isConnected();
+	}
 	public static void setClientMode(){
 		NetworkTable.setClientMode();
 	}
@@ -55,7 +55,7 @@ public class OutputWriter {
 		System.out.println(name);
 		NetworkTable.setTeam(2984);
 		NetworkTable.setClientMode();
-		NetworkTable.setIPAddress("10.29.84.21");
+		NetworkTable.setIPAddress("roboRIO-2984.local");
 		OutputWriter writer = new OutputWriter(NetworkTable.getTable(name));
 		instanses.put(name, writer);
 		return writer;

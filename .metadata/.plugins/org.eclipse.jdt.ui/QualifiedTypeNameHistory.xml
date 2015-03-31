@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Talon"/>
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Jaguar"/>
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.AnalogInput"/>
 <fullyQualifiedTypeName name="java.lang.reflect.Array"/>
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Gyro"/>
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.DigitalInput"/>
-<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.DriverStation"/>
 <fullyQualifiedTypeName name="com.ni.vision.NIVision.DrawTextOptions"/>
 <fullyQualifiedTypeName name="com.ni.vision.NIVision.Point"/>
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.networktables.NetworkTable"/>
@@ -14,4 +12,10 @@
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.smartdashboard.SmartDashboard"/>
 <fullyQualifiedTypeName name="java.lang.Math"/>
 <fullyQualifiedTypeName name="edu.wpi.first.wpilibj.CANTalon.ControlMode"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.Talon"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.GenericHID"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.GenericHID.Hand"/>
+<fullyQualifiedTypeName name="com.ni.vision.NIVision.Image"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.image.RGBImage"/>
+<fullyQualifiedTypeName name="edu.wpi.first.wpilibj.DriverStation"/>
 </qualifiedTypeNameHistroy>

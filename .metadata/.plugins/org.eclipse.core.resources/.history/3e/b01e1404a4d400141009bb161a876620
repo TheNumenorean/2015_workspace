@@ -1,0 +1,127 @@
+package org.usfirst.frc.team2984.robot;
+
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+/**
+ * This is a demo program showing how to use Mecanum control with the RobotDrive
+ * class.
+ */
+public class Robot extends IterativeRobot {
+	private static final long AUTONOMOUS_LENGTH = 1000;//In milliseconds
+	private MecanumDrive mecanumDrive;
+	private ToteLifter totelifter;
+	private ToteMuncher toteMunch;
+	private SensorMonitor sensorMonitor;
+	private Joystick stick;
+	private RemoteJoystick stick2;
+	private AnalogInput ain0;
+	private AnalogInput ain1;
+	private AnalogInput ain2;
+	private AnalogInput ain3;
+	private CameraServer server;
+	private long autonomousStartTime;
+	private CANTalon lifterArm;
+
+	// The channel on the driver station that the joystick is connected to
+	final int joystickChannel = 0;
+
+	private boolean moveingToPosition;
+
+	public void robotInit() {
+		stick = new Joystick(joystickChannel);
+		stick2 = new RemoteJoystick("CustomData1", false);
+		mecanumDrive = new MecanumDrive(14, 4, 16, 1);
+		this.totelifter = new ToteLifter(12, 9);
+		this.sensorMonitor = new SensorMonitor();
+		this.toteMunch = new ToteMuncher(2, 3, this.sensorMonitor);
+		ain0 = new AnalogInput(4);
+		ain1 = new AnalogInput(5);
+		ain2 = new AnalogInput(6);
+		ain3 = new AnalogInput(7);
+		ain0.setOversampleBits(24);
+		ain1.setOversampleBits(24);
+		ain0.setAverageBits(24);
+		ain1.setAverageBits(24);
+		server = CameraServer.getInstance();
+		server.setQuality(5);
+		server.startAutomaticCapture("cam0");
+		stick2.setBoolean("NetworkTable Connected", true);
+		lifterArm = new CANTalon(10);
+	}
+
+	/**
+	 * Runs the motors with Mecanum drive.
+	 */
+	public void teleopPeriodic() {
+		this.mecanumDrive.drive(stick2.getX(), stick2.getY(),
+				stick2.getTwist(), 0);
+		int movement = 0;
+		this.moveingToPosition = stick.getRawButton(2);
+		if (Math.abs(stick.getY()) > 0.1) {
+			this.totelifter.setSpeed(-stick.getY());
+		} else if (stick.getRawButton(3)) {
+			this.totelifter.resetDown();
+		} else if (this.moveingToPosition) {
+			this.totelifter.set(movement);
+		} else if(this.stick.getRawButton(4)){
+			this.totelifter.set(6480);
+		} else {
+			this.totelifter.setSpeed(0.0);
+		}
+
+		if (stick.getRawButton(5)) {
+			toteMunch.munch();
+		} else if (stick.getRawButton(6)) {
+			toteMunch.spit();
+		} else {
+			toteMunch.stop();
+		}
+
+		this.totelifter.debug();
+		SmartDashboard.putString("Value That it got",
+				this.stick2.getString("Encoder Locations"));
+		SmartDashboard.putBoolean("back",
+				sensorMonitor.isActive(Sensors.BACK_BEAM_SENSOR));
+		SmartDashboard.putBoolean("front lower",
+				sensorMonitor.isActive(Sensors.FRONT_LOWER_BEAM_SENSOR));
+		SmartDashboard.putBoolean("front upper",
+				sensorMonitor.isActive(Sensors.FRONT_UPPER_BEAM_SENSOR));
+		SmartDashboard.putBoolean("middle",
+				sensorMonitor.isActive(Sensors.MIDDEL_BEAM_SENSOR));
+		SmartDashboard.putNumber("Analog 0", ain0.getAverageValue());
+		SmartDashboard.putNumber("Analog 1", ain1.getAverageValue());
+		SmartDashboard.putNumber("Analog 2", ain2.getAverageValue());
+		SmartDashboard.putNumber("Analog 3", ain3.getAverageValue());
+		if(Math.abs(stick.getThrottle()) > 0.1){
+			this.lifterArm.set(-stick.getThrottle());
+		} else {
+			this.lifterArm.set(0);
+		}
+	}
+
+	@Override
+	public void autonomousInit() {
+		this.autonomousStartTime = System.currentTimeMillis();
+	}
+
+	@Override
+	public void autonomousPeriodic() {
+//		if (System.currentTimeMillis() - this.autonomousStartTime < AUTONOMOUS_LENGTH){
+//			this.mecanumDrive.drive(0, 0.5, 0, 0);
+//		} else {
+//			this.mecanumDrive.drive(0, 0, 0, 0);
+//		}
+		this.totelifter.resetDown();
+	}
+
+	public void testPeriodic() {
+		this.totelifter.debug();
+		SmartDashboard.putString("Value That it got",
+				this.stick2.getString("Encoder Locations"));
+	}
+}

@@ -2,18 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="output" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="output"/>
+			<item value="Time"/>
+			<item value="Time Started"/>
+			<item value="Network"/>
+			<item value="getInteger"/>
 			<item value="this.lifterMotorRight.changeControlMode(ControlMode.PercentVbus);"/>
 			<item value="Average: "/>
 			<item value="print"/>
-			<item value="line"/>
-			<item value="autoLoopCounter"/>
-			<item value=""/>
 		</list>
 		<list key="replacehistory">
 		</list>

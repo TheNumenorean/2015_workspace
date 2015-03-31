@@ -30,6 +30,14 @@ public class RemoteJoystick {
 		return "";
 	}
 	
+	//@TODO: implement whatever this does
+	public int getInteger(String name){
+		if (this.isConnected()){
+			return (int) table.getNumber(name);
+		}
+		return 0;
+	}
+	
 	public double getX() {
 		if (this.isConnected()){
 			return table.getNumber("axis2");
@@ -99,6 +107,10 @@ public class RemoteJoystick {
 
 	public void setNumber(String name, double value) {
 		table.putNumber(name, value);
+	}
+	
+	public void setBoolean(String name, boolean value){
+		table.putBoolean(name, value);
 	}
 
 }
